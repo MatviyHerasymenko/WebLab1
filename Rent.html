@@ -20,15 +20,19 @@
         <a href="Service.html">Сервіс</a>
     </div>
 
+
+    <a href="#top" class="scroll-top-btn" title="На початок сторінки">↑</a>
+
     <div class="content">
 
-        <h1>Оренда автомобілів AutoDrive</h1>
+        <h1 id="top">Оренда автомобілів AutoDrive</h1>
         <hr>
 
         <p>
             <b>AutoDrive Rent</b> — сервіс прокату автомобілів від нашого автосалону.
             Ми пропонуємо зручну та вигідну оренду авто в Києві та по всій Україні.
-            Жодних прихованих платежів — лише чесна ціна і якісний сервіс.
+
+            <span class="highlight-word">Жодних прихованих платежів</span> — лише чесна ціна і якісний сервіс.
         </p>
 
         <p style="font-size: 15px; color: #555555;">
@@ -38,31 +42,33 @@
 
         <hr>
 
-        <h2 id="top">Наш автопарк для оренди</h2>
+        <h2>Наш автопарк для оренди</h2>
 
         <p>В оренду доступні перевірені автомобілі різних класів:</p>
 
-        <p style="text-align: center;">
-            <img src="https://mmr.net.ua/catalog/uploads/2024/05/Toyota-Corolla-2025-Exterior.jpg"
-                 width="420" height="260" alt="Toyota Corolla">
-            <br>
-            <small>Toyota Corolla — один з найпопулярніших варіантів оренди.</small>
-        </p>
+        <div class="clearfix">
+            <div class="car-card" style="float: right; margin: 0 0 16px 24px;">
+                <img src="https://mmr.net.ua/catalog/uploads/2024/05/Toyota-Corolla-2025-Exterior.jpg"
+                     width="360" height="220" alt="Toyota Corolla"
+                     style="border: 3px solid #4a90d9; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); display: block;">
+                <span class="car-label">ХІТ ОРЕНДИ</span>
+            </div>
 
-        <ul type="disc">
-            <li><b>Економ:</b> Toyota Corolla, Skoda Octavia — від 700 грн/доба</li>
-            <li><b>Комфорт:</b> Toyota Camry, VW Passat — від 900 грн/доба</li>
-            <li><b>Кросовери:</b> Toyota RAV4, VW Tiguan — від 1 100 грн/доба</li>
-            <li><b>Бізнес:</b> BMW 5, Mercedes E-Class — від 1 900 грн/доба</li>
-        </ul>
+            <ul type="disc">
+                <li><b>Економ:</b> Toyota Corolla, Skoda Octavia — від <span class="price-tag">700 грн/доба</span></li>
+                <li><b>Комфорт:</b> Toyota Camry, VW Passat — від <span class="price-tag">900 грн/доба</span></li>
+                <li><b>Кросовери:</b> Toyota RAV4, VW Tiguan — від <span class="price-tag">1 100 грн/доба</span></li>
+                <li><b>Бізнес:</b> BMW 5, Mercedes E-Class — від <span class="price-tag">1 900 грн/доба</span></li>
+            </ul>
+        </div>
 
         <hr>
 
         <h2 id="prices">Ціни на оренду</h2>
 
         <p class="highlighted">
-            При оренді від <b>7 днів</b> — знижка <b style="color: red;">15%</b>.
-            При оренді від <b>30 днів</b> — знижка <b style="color: red;">25%</b>.
+            При оренді від <b>7 днів</b> — знижка <span class="price-tag">15%</span>.
+            При оренді від <b>30 днів</b> — знижка <span class="price-tag">25%</span>.
             У ціну включено страхування КАСКО та безлімітний пробіг.
         </p>
 
@@ -92,28 +98,28 @@
                     <td align="left"><b>Toyota Corolla</b></td>
                     <td>900</td>
                     <td>800</td>
-                    <td><b style="color: red;">700</b></td>
+                    <td><span class="price-tag">700</span></td>
                     <td>15 000</td>
                 </tr>
                 <tr align="center">
                     <td align="left"><b>Toyota RAV4</b></td>
                     <td>1 400</td>
                     <td>1 200</td>
-                    <td><b style="color: red;">1 100</b></td>
+                    <td><span class="price-tag">1 100</span></td>
                     <td>25 000</td>
                 </tr>
                 <tr align="center">
                     <td align="left"><b>VW Passat</b></td>
                     <td>1 100</td>
                     <td>950</td>
-                    <td><b style="color: red;">850</b></td>
+                    <td><span class="price-tag">850</span></td>
                     <td>20 000</td>
                 </tr>
                 <tr align="center">
                     <td align="left"><b>Mercedes E-Class</b></td>
                     <td>2 500</td>
                     <td>2 200</td>
-                    <td><b style="color: red;">1 900</b></td>
+                    <td><span class="price-tag">1 900</span></td>
                     <td>50 000</td>
                 </tr>
                 <tr>
@@ -131,7 +137,7 @@
         <p>
             Для оренди автомобіля необхідно мати дійсне <b>водійське посвідчення</b>
             (стаж не менше 2 років) та <b>паспорт</b>.
-            Мінімальний вік орендаря — <b style="color: red;">21 рік</b>.
+            Мінімальний вік орендаря — <span class="price-tag">21 рік</span>.
         </p>
 
         <ol type="1">
@@ -143,7 +149,6 @@
         </ol>
 
         <br>
-        <a href="#top">На початок сторінки ↑</a> |
         <a href="Catalog.html">Переглянути каталог авто</a>
 
     </div>
