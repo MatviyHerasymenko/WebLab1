@@ -14,12 +14,11 @@
 <body>
 
     <div class="navbar">
-        <a href="index.html">Головна</a>
-        <a href="Catalog.html">Каталог авто</a>
-        <a href="Rent.html">Оренда</a>
-        <a href="Service.html">Сервіс</a>
+        <a href="index.html" id="nav-index">Головна</a>
+        <a href="Catalog.html" id="nav-Catalog">Каталог авто</a>
+        <a href="Rent.html" id="nav-Rent">Оренда</a>
+        <a href="Service.html" id="nav-Service">Сервіс</a>
     </div>
-
 
     <a href="#top" class="scroll-top-btn" title="На початок сторінки">↑</a>
 
@@ -31,7 +30,6 @@
         <p>
             <b>AutoDrive Rent</b> — сервіс прокату автомобілів від нашого автосалону.
             Ми пропонуємо зручну та вигідну оренду авто в Києві та по всій Україні.
-
             <span class="highlight-word">Жодних прихованих платежів</span> — лише чесна ціна і якісний сервіс.
         </p>
 
@@ -149,13 +147,34 @@
         </ol>
 
         <br>
-        <a href="Catalog.html">Переглянути каталог авто</a>
+
+        <!-- confirm перед переходом до каталогу -->
+        <button class="btn-js" onclick="goToCatalog()">📋 Переглянути каталог авто</button>
 
     </div>
 
     <div class="footer">
         &copy; 2026 AutoDrive | м. Київ, вул. Автомобільна, 1 | Тел.: +38 (099) 123-45-67
+        <br>
+        <span
+            onclick="showDeveloperInfo('Герасименко', 'Матвій')"
+            title="Натисніть, щоб дізнатись про розробника"
+            style="cursor:pointer; font-size:12px; color:#cccccc; text-decoration:underline; margin-top:4px; display:inline-block;">
+            👨‍💻 Розробник сторінки
+        </span>
     </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        highlightActiveNav();
+
+        function goToCatalog() {
+            let answer = confirm("Ви збираєтесь перейти до каталогу автомобілів AutoDrive.\n\nПерейти до каталогу?");
+            if (answer) {
+                location.href = "Catalog.html";
+            }
+        }
+    </script>
 
 </body>
 </html>

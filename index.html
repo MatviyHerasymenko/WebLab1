@@ -10,14 +10,43 @@
             border-bottom: 2px solid #add8ff;
         }
     </style>
+
+
+    <script>
+        window.onload = function () {
+            alert("👋 Ласкаво просимо до AutoDrive!\n\nАкція: безкоштовний тест-драйв будь-якого авто цього тижня!\nРежим роботи: Пн–Нд, 09:00 – 20:00");
+
+            let city = prompt("Вкажіть ваше місто, щоб ми могли запропонувати актуальні пропозиції:");
+
+            if (city === null) {
+                return;
+            }
+
+            city = city.trim();
+
+            if (city.toLowerCase() !== "київ" && city !== "") {
+                let goOnline = confirm(
+                    "Схоже, ви не з Києва (" + city + ").\n" +
+                    "Наш салон знаходиться тільки в Києві.\n\n" +
+                    "Перейти до сторінки онлайн-оренди та послуг?"
+                );
+
+                if (goOnline) {
+                    location.href = "Rent.html";
+                }
+            } else if (city !== "") {
+                alert("Чудово! Ви з Києва — запрошуємо до нашого салону на вул. Автомобільна, 1");
+            }
+        };
+    </script>
 </head>
 <body>
 
     <div class="navbar">
-        <a href="index.html">Головна</a>
-        <a href="Catalog.html">Каталог авто</a>
-        <a href="Rent.html">Оренда</a>
-        <a href="Service.html">Сервіс</a>
+        <a href="index.html" id="nav-index">Головна</a>
+        <a href="Catalog.html" id="nav-Catalog">Каталог авто</a>
+        <a href="Rent.html" id="nav-Rent">Оренда</a>
+        <a href="Service.html" id="nav-Service">Сервіс</a>
     </div>
 
     <a href="#top" class="scroll-top-btn" title="На початок сторінки">↑</a>
@@ -28,7 +57,6 @@
         <hr>
 
         <h2>Про нас</h2>
-
 
         <div class="clearfix">
             <a href="https://www.softcom.ua/upload/iblock/397/salon.jpg" target="_blank">
@@ -60,6 +88,23 @@
         </div>
 
         <p><a href="#contacts">Контакти ↓</a></p>
+
+        <hr>
+
+    
+        <h2>Підбір автомобіля</h2>
+
+        <div class="js-demo-block">
+            <h3>🚗 Не знаєте, яке авто обрати?</h3>
+            <p>Пройдіть короткий підбір — наш консультант задасть кілька запитань і порекомендує модель під ваш бюджет та потреби.</p>
+            <button class="btn-js" onclick="dialogWithUser()">▶ Підібрати автомобіль</button>
+        </div>
+
+        <div class="js-demo-block">
+            <h3>📏 Порівняти назви авто за довжиною</h3>
+            <p>Цікаво, яка назва автомобіля довша? Введіть дві назви і дізнайтесь!</p>
+            <button class="btn-js" onclick="compareStrings()">Порівняти назви</button>
+        </div>
 
         <hr>
 
@@ -130,12 +175,21 @@
             </p>
         </div>
 
-
     </div>
 
     <div class="footer">
         &copy; 2026 AutoDrive | м. Київ, вул. Автомобільна, 1 | Тел.: +38 (099) 123-45-67
+        <br>
+        <span
+            id="dev-badge"
+            onclick="showDeveloperInfo('Герасименко', 'Матвій')"
+            title="Натисніть, щоб дізнатись про розробника"
+            style="cursor:pointer; font-size:12px; color:#cccccc; text-decoration:underline; margin-top:4px; display:inline-block;">
+            👨‍💻 Розробник сторінки
+        </span>
     </div>
+
+    <script src="scripts.js"></script>
 
 </body>
 </html>

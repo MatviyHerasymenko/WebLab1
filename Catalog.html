@@ -14,10 +14,10 @@
 <body>
 
     <div class="navbar">
-        <a href="index.html">Головна</a>
-        <a href="Catalog.html">Каталог авто</a>
-        <a href="Rent.html">Оренда</a>
-        <a href="Service.html">Сервіс</a>
+        <a href="index.html" id="nav-index">Головна</a>
+        <a href="Catalog.html" id="nav-Catalog">Каталог авто</a>
+        <a href="Rent.html" id="nav-Rent">Оренда</a>
+        <a href="Service.html" id="nav-Service">Сервіс</a>
     </div>
 
     <a href="#top" class="scroll-top-btn" title="На початок сторінки">↑</a>
@@ -33,6 +33,27 @@
             Натискайте на фото автомобіля, щоб переглянути його у повному розмірі.
             Якщо хочете протестувати авто перед покупкою — скористайтесь послугою <a href="Rent.html">оренди</a>.
         </p>
+
+        <hr>
+
+        <div class="car-of-day-wrapper">
+            <h2 id="car-of-day-heading">⭐ Авто дня</h2>
+            <p style="color:#555; font-size:15px; margin-bottom:12px;">
+                Щодня ми обираємо особливу пропозицію для наших клієнтів. Натисніть кнопку, щоб дізнатись про сьогоднішній вибір!
+            </p>
+
+            <button class="btn-js" id="show-car-btn" onclick="showCarOfDay()">🚗 Показати авто дня</button>
+            <button class="btn-js-secondary" id="reset-car-btn" onclick="resetCarOfDay()">✕ Сховати</button>
+
+            <div id="car-of-day" style="margin-top: 14px;"></div>
+            <p id="car-day-caption"></p>
+        </div>
+
+        <div style="background:#fff3e0; border:1px solid #ffcc80; border-radius:6px; padding:14px 20px; margin-bottom:18px;">
+            <b>📏 Порівняти назви автомобілів за довжиною:</b>
+            <br>
+            <button class="btn-js" style="margin-top:8px;" onclick="compareStrings()">Порівняти назви</button>
+        </div>
 
         <hr>
 
@@ -276,7 +297,19 @@
 
     <div class="footer">
         &copy; 2026 AutoDrive | м. Київ, вул. Автомобільна, 1 | Тел.: +38 (099) 123-45-67
+        <br>
+        <span
+            onclick="showDeveloperInfo('Герасименко', 'Матвій')"
+            title="Натисніть, щоб дізнатись про розробника"
+            style="cursor:pointer; font-size:12px; color:#cccccc; text-decoration:underline; margin-top:4px; display:inline-block;">
+            👨‍💻 Розробник сторінки
+        </span>
     </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        highlightActiveNav();
+    </script>
 
 </body>
 </html>

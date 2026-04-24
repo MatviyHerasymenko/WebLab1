@@ -314,3 +314,87 @@ ol li:first-child {
     padding: 1px 4px;
     border-radius: 3px;
 }
+
+
+/* кнопки JS функцій  */
+.btn-js {
+    display: inline-block;
+    padding: 9px 20px;
+    background-color: #1a3a5c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px 6px 4px 0;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-js:hover {
+    background-color: #4a90d9;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-js:link,
+.btn-js:visited {
+    color: #fff;
+}
+
+.btn-js-secondary {
+    display: none;
+    padding: 9px 20px;
+    background-color: #888;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px 0;
+    transition: background 0.2s;
+}
+
+.btn-js-secondary:hover {
+    background-color: #555;
+}
+
+.btn-night {
+    background-color: #2c5f8a;
+}
+
+.btn-night:hover {
+    background-color: #1a3a5c;
+}
+
+
+.js-demo-block {
+    background: #f0f6ff;
+    border: 1px solid #b0ccee;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 18px 0;
+}
+
+.js-demo-block h3 {
+    margin-top: 0;
+    color: #1a3a5c;
+}
+
+.car-of-day-wrapper {
+    background: #f0f6ff;
+    border: 1px solid #b0ccee;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 18px 0;
+}
+
+#car-day-caption {
+    font-style: italic;
+    color: #3475ab;
+    margin-top: 10px;
+    font-size: 15px;
+    min-height: 20px;
+}

@@ -101,7 +101,7 @@ function toggleNightMode() {
         btn.disabled = true;
     }
 
-    alert("🌙 Нічний режим активовано на 30 секунд!");
+    alert(" Нічний режим активовано на 30 секунд!");
 
     setTimeout(function () {
         document.body.style.backgroundColor = originalBg;
@@ -110,16 +110,14 @@ function toggleNightMode() {
             btn.textContent = "🌙 Нічний режим (30 сек)";
             btn.disabled = false;
         }
-        alert("☀️ Нічний режим вимкнено. Звичайний режим відновлено.");
+        alert(" Нічний режим вимкнено. Звичайний режим відновлено.");
     }, 30000);
 }
 
 
 
-// --------------------------------------------------
-// 5. Підсвічування активного пункту навбара
-//    використовує getElementById та querySelectorAll
-// --------------------------------------------------
+// 5. підсвічування активного пункту навбара
+
 function highlightActiveNav() {
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     const allLinks = document.querySelectorAll(".navbar a");
@@ -136,9 +134,8 @@ function highlightActiveNav() {
 }
 
 
-// --------------------------------------------------
-// 6. Блок "Авто дня" — innerHTML, outerHTML, textContent, nodeValue
-// --------------------------------------------------
+// 6. блок Авто дня — innerHTML, outerHTML, textContent, nodeValue
+
 function showCarOfDay() {
     const cars = [
         {
@@ -169,7 +166,7 @@ function showCarOfDay() {
 
     if (!container) return;
 
-    // innerHTML — вставляємо повну HTML-картку
+
     container.innerHTML =
         "<div style='background:#f0f6ff; border:2px solid #4a90d9; border-radius:8px; padding:16px; display:flex; gap:20px; align-items:center; flex-wrap:wrap;'>" +
         "<img src='" + randomCar.img + "' width='260' height='155' alt='" + randomCar.name + "' style='border-radius:6px; border:2px solid #4a90d9;'>" +
@@ -181,19 +178,17 @@ function showCarOfDay() {
         "</div>" +
         "</div>";
 
-    // textContent — оновлюємо підпис без тегів
     const caption = document.getElementById("car-day-caption");
     if (caption) {
         caption.textContent = "Актуальна пропозиція дня: " + randomCar.name + " вже чекає на вас у салоні!";
     }
 
-    // outerHTML — замінюємо заголовок блоку цілком
     const title = document.getElementById("car-of-day-heading");
     if (title) {
         title.outerHTML = "<h2 id='car-of-day-heading' style='color:#1a3a5c;border-bottom:2px solid #4a90d9;padding-bottom:5px;'>⭐ Авто дня — " + randomCar.name + "</h2>";
     }
 
-    // nodeValue — змінюємо текстовий вузол ціни
+    // nodeValue
     const priceVal = document.getElementById("car-day-price-val");
     if (priceVal && priceVal.firstChild) {
         priceVal.firstChild.nodeValue = randomCar.price;
@@ -220,15 +215,15 @@ function resetCarOfDay() {
 }
 
 
-// --------------------------------------------------
-// 7. Банер акції на Service.html
-//    createElement, createTextNode, append, prepend, after, replaceWith, remove
-// --------------------------------------------------
+
+// 7. банер акції на Service.html
+
+
 function showPromoBanner() {
     const btn = document.getElementById("show-promo-btn");
     if (!btn) return;
 
-    // createElement — створюємо всі елементи
+
     const banner = document.createElement("div");
     banner.id = "promo-banner";
     banner.style.cssText = "background:linear-gradient(135deg,#1a3a5c,#4a90d9);color:#fff;border-radius:10px;padding:20px 24px;margin:20px 0;box-shadow:0 4px 16px rgba(0,0,0,0.2);";
@@ -239,9 +234,9 @@ function showPromoBanner() {
 
     const heading = document.createElement("h3");
     heading.id = "promo-heading";
-    heading.style.cssText = "margin:0 0 8px;font-size:20px;";
+    heading.style.cssText = "margin:0 0 8px;font-size:20px; color:#fff;";
 
-    // createTextNode — текстовий вузол для заголовка
+  
     const headingText = document.createTextNode("Акція цього тижня: знижка 10% на ТО!");
     heading.appendChild(headingText);
 
@@ -249,7 +244,7 @@ function showPromoBanner() {
     desc.id = "promo-desc";
     desc.style.cssText = "margin:0 0 14px;font-size:15px;opacity:0.9;";
 
-    // createTextNode — текстовий вузол для опису
+
     const descText = document.createTextNode("При записі онлайн або за телефоном до кінця тижня — знижка 10% на будь-яке технічне обслуговування.");
     desc.appendChild(descText);
 
@@ -266,14 +261,11 @@ function showPromoBanner() {
     closeBtn.style.cssText = "padding:8px 16px;border:2px solid #fff;background:transparent;color:#fff;border-radius:6px;cursor:pointer;font-weight:bold;";
     closeBtn.onclick = removePromoBanner;
 
-    // append — додаємо елементи всередину
     btnRow.append(replaceBtn, closeBtn);
     banner.append(heading, desc, btnRow);
 
-    // prepend — іконку додаємо на початок банера
     banner.prepend(icon);
 
-    // after — вставляємо банер після таблиці прайсу
     const priceTable = document.querySelector("#prices + table, #prices ~ table");
     if (priceTable) {
         priceTable.after(banner);
@@ -289,7 +281,6 @@ function replacePromoDesc() {
     const oldDesc = document.getElementById("promo-desc");
     if (!oldDesc) return;
 
-    // replaceWith — замінюємо параграф з описом на новий
     const newDesc = document.createElement("p");
     newDesc.id = "promo-desc";
     newDesc.style.cssText = "margin:0 0 14px;font-size:15px;opacity:0.9;";
@@ -300,7 +291,7 @@ function replacePromoDesc() {
 
 function removePromoBanner() {
     const banner = document.getElementById("promo-banner");
-    if (banner) banner.remove(); // remove — видаляємо банер
+    if (banner) banner.remove();
 
     const btn = document.getElementById("show-promo-btn");
     if (btn) btn.style.display = "inline-block";

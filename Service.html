@@ -14,10 +14,10 @@
 <body>
 
     <div class="navbar">
-        <a href="index.html">Головна</a>
-        <a href="Catalog.html">Каталог авто</a>
-        <a href="Rent.html">Оренда</a>
-        <a href="Service.html">Сервіс</a>
+        <a href="index.html" id="nav-index">Головна</a>
+        <a href="Catalog.html" id="nav-Catalog">Каталог авто</a>
+        <a href="Rent.html" id="nav-Rent">Оренда</a>
+        <a href="Service.html" id="nav-Service">Сервіс</a>
     </div>
 
     <a href="#top" class="scroll-top-btn" title="На початок сторінки">↑</a>
@@ -25,6 +25,11 @@
     <div class="content">
 
         <h1 id="top">Сервісний центр AutoDrive</h1>
+
+        <script>
+            document.write("<p style='text-align:center; font-size:13px; color:#888; margin:4px 0 10px;'>📅 Прайс-лист оновлено: " + new Date().toLocaleDateString("uk-UA", {year:"numeric", month:"long", day:"numeric"}) + "</p>");
+        </script>
+
         <hr>
 
         <p>
@@ -44,6 +49,8 @@
             Плануєте купити нове авто і хочете, щоб воно завжди було в ідеальному стані?
             Перегляньте наш <a href="Catalog.html">каталог автомобілів</a>.
         </p>
+
+        <button class="btn-js btn-night" id="night-mode-btn" onclick="toggleNightMode()">🌙 Нічний режим (30 сек)</button>
 
         <hr>
 
@@ -127,6 +134,8 @@
             </tbody>
         </table>
 
+        <button class="btn-js" id="show-promo-btn" onclick="showPromoBanner()">🎁 Показати акційну пропозицію</button>
+
         <hr>
 
         <h2 id="schedule">Розклад роботи</h2>
@@ -156,7 +165,19 @@
 
     <div class="footer">
         &copy; 2026 AutoDrive | м. Київ, вул. Автомобільна, 1 | Тел.: +38 (099) 123-45-67
+        <br>
+        <span
+            onclick="showDeveloperInfo('Герасименко', 'Матвій')"
+            title="Натисніть, щоб дізнатись про розробника"
+            style="cursor:pointer; font-size:12px; color:#cccccc; text-decoration:underline; margin-top:4px; display:inline-block;">
+            👨‍💻 Розробник сторінки
+        </span>
     </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        highlightActiveNav();
+    </script>
 
 </body>
 </html>
