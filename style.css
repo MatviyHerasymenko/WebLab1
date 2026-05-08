@@ -391,6 +391,28 @@ ol li:first-child {
     margin: 18px 0;
 }
 
+#why-list li {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+#why-list li.li-active {
+    background-color: #fff3cd;
+    color: #1a3a5c;
+    font-weight: bold;
+    border-left: 3px solid #4a90d9;
+    padding-left: 10px;
+}
+
+
+.car-hover-card {
+    display: inline-block;
+    cursor: default;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 #car-day-caption {
     font-style: italic;
     color: #3475ab;

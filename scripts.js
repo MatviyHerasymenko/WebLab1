@@ -1,5 +1,3 @@
-
-
 // 1. функція діалогу з користувачем
 
 function dialogWithUser() {
@@ -238,7 +236,7 @@ function showPromoBanner() {
 
   
     const headingText = document.createTextNode("Акція цього тижня: знижка 10% на ТО!");
-    heading.appendChild(headingText);
+    heading.append(headingText);
 
     const desc = document.createElement("p");
     desc.id = "promo-desc";
@@ -246,7 +244,7 @@ function showPromoBanner() {
 
 
     const descText = document.createTextNode("При записі онлайн або за телефоном до кінця тижня — знижка 10% на будь-яке технічне обслуговування.");
-    desc.appendChild(descText);
+    desc.append(descText);
 
     const btnRow = document.createElement("div");
     btnRow.style.cssText = "display:flex;gap:10px;flex-wrap:wrap;";
@@ -291,8 +289,236 @@ function replacePromoDesc() {
 
 function removePromoBanner() {
     const banner = document.getElementById("promo-banner");
-    if (banner) banner.remove();
+    if (banner) {
+        //1.5 видаляємо об'єкт-обробник через removeEventListener
+        if (window._bannerHandler) {
+            banner.removeEventListener("mouseover", window._bannerHandler);
+            banner.removeEventListener("mouseout", window._bannerHandler);
+            window._bannerHandler = null;
+        }
+        banner.remove();
+    }
 
     const btn = document.getElementById("show-promo-btn");
     if (btn) btn.style.display = "inline-block";
 }
+
+
+
+
+// 1.1 обробники через атрибут (onmouseover/onmouseout HTML) — картки авто в Catalog
+
+function carCardMouseOver(el) {
+    el.style.transform = "scale(1.04)";
+    el.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
+    el.style.boxShadow = "0 6px 24px rgba(74,144,217,0.45)";
+    el.style.zIndex = "10";
+}
+
+function carCardMouseOut(el) {
+    el.style.transform = "";
+    el.style.boxShadow = "";
+    el.style.zIndex = "";
+}
+
+// 1.2 Обробник через властивість блок .car-of-day-wrapper
+function initCarOfDayWrapperHover() {
+    const wrapper = document.querySelector(".car-of-day-wrapper");
+    if (!wrapper) return;
+
+    wrapper.onmouseover = function() {
+        wrapper.style.boxShadow = "0 4px 18px rgba(74,144,217,0.35)";
+        wrapper.style.borderColor = "#4a90d9";
+        wrapper.style.transition = "box-shadow 0.2s ease, border-color 0.2s ease";
+    };
+
+    wrapper.onmouseout = function() {
+        wrapper.style.boxShadow = "";
+        wrapper.style.borderColor = "";
+    };
+}
+
+
+// 1.3 addEventListener два різних обробники на кнопці авто дня
+let carViewCount = 0;
+
+function initShowCarBtnListeners() {
+    const btn = document.getElementById("show-car-btn");
+    if (!btn) return;
+
+    btn.addEventListener("click", showCarOfDay);
+
+    btn.addEventListener("click", function() {
+        carViewCount++;
+        let counter = document.getElementById("car-view-counter");
+        if (!counter) {
+            counter = document.createElement("p");
+            counter.id = "car-view-counter";
+            counter.style.cssText = "font-size:13px; color:#3475ab; margin-top:6px; font-style:italic;";
+            btn.parentNode.insertBefore(counter, btn.nextSibling);
+        }
+        counter.textContent = "👁 Ви переглянули авто дня: " + carViewCount + " раз(и) за цю сесію";
+    });
+}
+
+
+// 1.4 обробник-об'єкт з handleEvent + event.currentTarget + removeEventListener в Service
+const bannerHoverHandler = {
+    _tooltip: null,
+
+    handleEvent(event) {
+        const target = event.currentTarget; 
+
+        if (event.type === "mouseover") {
+
+            const hoveredBtn = event.target.closest("button");
+            let msg = "Банер акції AutoDrive Service";
+            if (hoveredBtn) {
+                msg = "Активна кнопка: «" + hoveredBtn.textContent.trim() + "»";
+            }
+
+            if (!this._tooltip) {
+                this._tooltip = document.createElement("div");
+                this._tooltip.style.cssText =
+                    "position:absolute; background:#1a3a5c; color:#fff; font-size:12px;" +
+                    "padding:4px 10px; border-radius:4px; pointer-events:none; z-index:999;" +
+                    "white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.3);";
+                document.body.appendChild(this._tooltip);
+            }
+            this._tooltip.textContent = msg;
+            this._tooltip.style.display = "block";
+
+            const rect = target.getBoundingClientRect();
+            this._tooltip.style.top = (window.scrollY + rect.bottom + 6) + "px";
+            this._tooltip.style.left = (window.scrollX + rect.left) + "px";
+
+        } else if (event.type === "mouseout") {
+            if (this._tooltip) {
+                this._tooltip.style.display = "none";
+            }
+        }
+    },
+
+    destroy() {
+        if (this._tooltip) {
+            this._tooltip.remove();
+            this._tooltip = null;
+        }
+    }
+};
+
+// прикріплюємо об'єкт-обробник до банера після його появи
+function attachBannerObjectHandler() {
+    const banner = document.getElementById("promo-banner");
+    if (!banner) return;
+    banner.addEventListener("mouseover", bannerHoverHandler);
+    banner.addEventListener("mouseout", bannerHoverHandler);
+    window._bannerHandler = bannerHoverHandler;
+}
+
+const _origShowPromoBanner = showPromoBanner;
+showPromoBanner = function() {
+    _origShowPromoBanner();
+    setTimeout(attachBannerObjectHandler, 0);
+};
+
+const _origRemovePromoBanner = removePromoBanner;
+removePromoBanner = function() {
+    const banner = document.getElementById("promo-banner");
+    if (banner && window._bannerHandler) {
+        banner.removeEventListener("mouseover", window._bannerHandler);
+        banner.removeEventListener("mouseout", window._bannerHandler);
+        bannerHoverHandler.destroy();
+        window._bannerHandler = null;
+    }
+
+    const b = document.getElementById("promo-banner");
+    if (b) b.remove();
+    const btn = document.getElementById("show-promo-btn");
+    if (btn) btn.style.display = "inline-block";
+};
+
+
+
+// 2.1 Підсвічування елементів списку через event.target на батьківському <ul> на index.html
+function initWhyListHighlight() {
+    const list = document.getElementById("why-list");
+    if (!list) return;
+
+    list.onclick = function(event) {
+        const li = event.target.closest("li");
+        if (!li || !list.contains(li)) return;
+
+        list.querySelectorAll("li").forEach(function(item) {
+            item.classList.remove("li-active");
+        });
+
+        li.classList.add("li-active");
+    };
+}
+
+
+// 2.2 Меню з data-action + один обробник для всього меню Service
+function initServiceQuickMenu() {
+    const menu = document.getElementById("service-quick-menu");
+    if (!menu) return;
+
+    menu.addEventListener("click", function(event) {
+        const btn = event.target.closest("[data-action]");
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+
+        if (action === "book") {
+            alert("📅 Запис на сервіс\n\nЗателефонуйте: +38 (099) 123-45-67\nабо надішліть email: service@autodrive.ua\n\nГрафік: Пн–Пт 08:00–20:00, Сб 09:00–18:00");
+        } else if (action === "promo") {
+            showPromoBanner();
+        } else if (action === "contacts") {
+            const target = document.getElementById("schedule");
+            if (target) target.scrollIntoView({ behavior: "smooth" });
+        }
+    });
+}
+
+
+// 2.3 прийом поведінка та data-tooltip
+function initTooltipBehavior() {
+    const elements = document.querySelectorAll("[data-tooltip]");
+
+    let tooltipEl = document.createElement("div");
+    tooltipEl.id = "behavior-tooltip";
+    tooltipEl.style.cssText =
+        "display:none; position:absolute; background:#1a3a5c; color:#fff;" +
+        "font-size:12px; padding:5px 12px; border-radius:5px; pointer-events:none;" +
+        "z-index:9999; max-width:240px; box-shadow:0 3px 10px rgba(0,0,0,0.25);" +
+        "line-height:1.5; white-space:normal;";
+    document.body.appendChild(tooltipEl);
+
+    elements.forEach(function(el) {
+        el.addEventListener("mouseenter", function(e) {
+            tooltipEl.textContent = el.dataset.tooltip;
+            tooltipEl.style.display = "block";
+            positionTooltip(e);
+        });
+        el.addEventListener("mousemove", positionTooltip);
+        el.addEventListener("mouseleave", function() {
+            tooltipEl.style.display = "none";
+        });
+    });
+
+    function positionTooltip(e) {
+        tooltipEl.style.top = (window.scrollY + e.clientY + 14) + "px";
+        tooltipEl.style.left = (window.scrollX + e.clientX + 10) + "px";
+    }
+}
+
+
+
+// ініціалізація всіх нових функцій при завантаженні сторінки
+document.addEventListener("DOMContentLoaded", function() {
+    initCarOfDayWrapperHover(); 
+    initShowCarBtnListeners();    
+    initWhyListHighlight();        
+    initServiceQuickMenu();        
+    initTooltipBehavior();         
+});
