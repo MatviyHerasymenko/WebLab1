@@ -290,7 +290,6 @@ function replacePromoDesc() {
 function removePromoBanner() {
     const banner = document.getElementById("promo-banner");
     if (banner) {
-        //1.5 видаляємо об'єкт-обробник через removeEventListener
         if (window._bannerHandler) {
             banner.removeEventListener("mouseover", window._bannerHandler);
             banner.removeEventListener("mouseout", window._bannerHandler);
@@ -306,36 +305,190 @@ function removePromoBanner() {
 
 
 
-// 1.1 обробники через атрибут (onmouseover/onmouseout HTML) — картки авто в Catalog
 
-function carCardMouseOver(el) {
-    el.style.transform = "scale(1.04)";
-    el.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
-    el.style.boxShadow = "0 6px 24px rgba(74,144,217,0.45)";
-    el.style.zIndex = "10";
+
+// 1.1 підсвічування рядків таблиці каталогу через mouseover/mouseout
+// event.relatedTarget використовується щоб не скидати підсвічування
+
+function tableRowMouseOver(event) {
+    const row = event.target.closest("tr");
+    if (!row) return;
+
+    if (event.relatedTarget && row.contains(event.relatedTarget)) return;
+
+    row.style.backgroundColor = "#cce4ff";
+    row.style.transition = "background-color 0.2s";
 }
 
-function carCardMouseOut(el) {
-    el.style.transform = "";
-    el.style.boxShadow = "";
-    el.style.zIndex = "";
+function tableRowMouseOut(event) {
+    const row = event.target.closest("tr");
+    if (!row) return;
+
+    if (event.relatedTarget && row.contains(event.relatedTarget)) return;
+
+    row.style.backgroundColor = "";
 }
 
-// 1.2 Обробник через властивість блок .car-of-day-wrapper
-function initCarOfDayWrapperHover() {
-    const wrapper = document.querySelector(".car-of-day-wrapper");
-    if (!wrapper) return;
 
-    wrapper.onmouseover = function() {
-        wrapper.style.boxShadow = "0 4px 18px rgba(74,144,217,0.35)";
-        wrapper.style.borderColor = "#4a90d9";
-        wrapper.style.transition = "box-shadow 0.2s ease, border-color 0.2s ease";
+
+// 1.2 перетягування mousedown/mousemove/mouseup
+
+
+function initServiceBasket() {
+    const serviceItems = document.querySelectorAll(".service-drag-item");
+    const basket = document.getElementById("service-basket-list");
+    const basketEmpty = document.getElementById("basket-empty-msg");
+    const basketTotal = document.getElementById("basket-total");
+    const clearBtn = document.getElementById("basket-clear-btn");
+
+    if (!serviceItems.length || !basket) return;
+
+    let dragEl = null;      
+    let sourceItem = null; 
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    // взяття клону затиском
+    serviceItems.forEach(function(item) {
+        item.addEventListener("mousedown", function(event) {
+            event.preventDefault();
+
+            sourceItem = item;
+            isDragging = true;
+
+            dragEl = item.cloneNode(true);
+            dragEl.style.cssText =
+                "position:fixed; z-index:9999; opacity:0.85; pointer-events:none;" +
+                "background:#1a3a5c; color:#fff; border-radius:6px; padding:8px 16px;" +
+                "font-size:14px; font-weight:bold; box-shadow:0 4px 16px rgba(0,0,0,0.3);" +
+                "cursor:grabbing; white-space:nowrap;";
+
+            const rect = item.getBoundingClientRect();
+            offsetX = event.clientX - rect.left;
+            offsetY = event.clientY - rect.top;
+
+            dragEl.style.left = (event.clientX - offsetX) + "px";
+            dragEl.style.top  = (event.clientY - offsetY) + "px";
+            document.body.appendChild(dragEl);
+
+            item.style.opacity = "0.4";
+        });
+    });
+
+    // перетягування клону
+    document.addEventListener("mousemove", function(event) {
+        if (!isDragging || !dragEl) return;
+
+        dragEl.style.left = (event.clientX - offsetX) + "px";
+        dragEl.style.top  = (event.clientY - offsetY) + "px";
+
+        const basketZone = document.getElementById("service-basket");
+        if (basketZone) {
+            const rect = basketZone.getBoundingClientRect();
+            const over = event.clientX >= rect.left && event.clientX <= rect.right &&
+                         event.clientY >= rect.top  && event.clientY <= rect.bottom;
+            basketZone.style.borderColor = over ? "#e01b24" : "#4a90d9";
+            basketZone.style.backgroundColor = over ? "#fff0f0" : "#f0f6ff";
+        }
+    });
+
+    // дроп в корзину
+    document.addEventListener("mouseup", function(event) {
+        if (!isDragging || !dragEl) return;
+
+        isDragging = false;
+
+        dragEl.remove();
+        dragEl = null;
+
+        if (sourceItem) sourceItem.style.opacity = "";
+
+        const basketZone = document.getElementById("service-basket");
+        if (basketZone) {
+            basketZone.style.borderColor = "";
+            basketZone.style.backgroundColor = "";
+
+            const rect = basketZone.getBoundingClientRect();
+            const dropped = event.clientX >= rect.left && event.clientX <= rect.right &&
+                            event.clientY >= rect.top  && event.clientY <= rect.bottom;
+
+            if (dropped && sourceItem) {
+                addToBasket(sourceItem, basket, basketEmpty, basketTotal);
+            }
+        }
+
+        sourceItem = null;
+    });
+
+    if (clearBtn) {
+        clearBtn.addEventListener("click", function() {
+            basket.querySelectorAll(".basket-item").forEach(function(el) { el.remove(); });
+            updateBasketTotal(basket, basketEmpty, basketTotal);
+        });
+    }
+}
+
+function addToBasket(sourceItem, basket, basketEmpty, basketTotal) {
+    const name  = sourceItem.dataset.name;
+    const price = sourceItem.dataset.price;
+
+    const existing = basket.querySelector("[data-basket-name='" + CSS.escape(name) + "']");
+    if (existing) {
+        existing.style.animation = "none";
+        existing.style.background = "#fff3cd";
+        setTimeout(function() {
+            existing.style.background = "";
+        }, 600);
+        return;
+    }
+
+    const item = document.createElement("div");
+    item.className = "basket-item";
+    item.dataset.basketName = name;
+    item.style.cssText =
+        "display:flex; justify-content:space-between; align-items:center;" +
+        "padding:7px 10px; background:#f0f6ff; border:1px solid #b0ccee;" +
+        "border-radius:5px; margin-bottom:6px; font-size:14px;";
+
+    const label = document.createElement("span");
+    label.textContent = "🔧 " + name;
+
+    const priceSpan = document.createElement("span");
+    priceSpan.style.cssText = "color:#e01b24; font-weight:bold; margin:0 10px;";
+    priceSpan.textContent = price + " грн";
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "✕";
+    removeBtn.style.cssText =
+        "background:none; border:none; cursor:pointer; color:#888;" +
+        "font-size:16px; line-height:1; padding:0 2px;";
+    removeBtn.onclick = function() {
+        item.remove();
+        updateBasketTotal(basket, basketEmpty, basketTotal);
     };
 
-    wrapper.onmouseout = function() {
-        wrapper.style.boxShadow = "";
-        wrapper.style.borderColor = "";
-    };
+    item.append(label, priceSpan, removeBtn);
+    basket.appendChild(item);
+    updateBasketTotal(basket, basketEmpty, basketTotal);
+}
+
+function updateBasketTotal(basket, basketEmpty, basketTotal) {
+    const items = basket.querySelectorAll(".basket-item");
+    if (basketEmpty) basketEmpty.style.display = items.length === 0 ? "block" : "none";
+
+    let total = 0;
+    items.forEach(function(item) {
+        const priceText = item.querySelector("span:nth-child(2)").textContent;
+        const num = parseInt(priceText.replace(/\D/g, ""));
+        if (!isNaN(num)) total += num;
+    });
+
+    if (basketTotal) {
+        basketTotal.textContent = items.length === 0
+            ? ""
+            : "💰 Орієнтовна вартість: " + total.toLocaleString("uk-UA") + " грн";
+    }
 }
 
 
@@ -516,9 +669,9 @@ function initTooltipBehavior() {
 
 // ініціалізація всіх нових функцій при завантаженні сторінки
 document.addEventListener("DOMContentLoaded", function() {
-    initCarOfDayWrapperHover(); 
-    initShowCarBtnListeners();    
-    initWhyListHighlight();        
-    initServiceQuickMenu();        
-    initTooltipBehavior();         
+    initShowCarBtnListeners();
+    initWhyListHighlight();
+    initServiceQuickMenu();
+    initTooltipBehavior();
+    initServiceBasket();
 });

@@ -157,6 +157,56 @@
 
         <hr>
 
+        <h2 id="basket-section">Конструктор послуг</h2>
+        <p>Перетягніть потрібні послуги у кошик — ми підготуємо для вас орієнтовний розрахунок вартості.</p>
+
+        <div class="service-basket-wrapper">
+
+            <div class="service-drag-list">
+                <p class="service-drag-list-heading">
+                    🔧 Доступні послуги <span>(перетягніть у кошик)</span>
+                </p>
+                <div class="service-drag-items">
+                    <div class="service-drag-item"
+                         data-name="Комп'ютерна діагностика" data-price="450"
+                         data-tooltip="Повна діагностика всіх систем авто. Вартість від 300 до 600 грн.">
+                        🔍 Комп'ютерна діагностика — <span>від 300 грн</span>
+                    </div>
+                    <div class="service-drag-item"
+                         data-name="Заміна моторного масла" data-price="600"
+                         data-tooltip="Заміна масла та масляного фільтра. Без вартості самого масла.">
+                        🛢 Заміна моторного масла — <span>від 400 грн</span>
+                    </div>
+                    <div class="service-drag-item"
+                         data-name="Заміна гальмівних колодок" data-price="900"
+                         data-tooltip="Заміна колодок за одну вісь. Ціна залежить від марки авто.">
+                        🛑 Заміна гальмівних колодок — <span>від 600 грн</span>
+                    </div>
+                    <div class="service-drag-item"
+                         data-name="Заміна ременя ГРМ" data-price="3500"
+                         data-tooltip="Складна операція. Вартість залежить від марки та моделі авто.">
+                        ⚙️ Заміна ременя ГРМ — <span>від 2 500 грн</span>
+                    </div>
+                    <div class="service-drag-item"
+                         data-name="Кузовний ремонт" data-price="800"
+                         data-tooltip="Рихтування та усунення вм'ятин. Ціна за одну вм'ятину.">
+                        🔨 Кузовний ремонт — <span>від 800 грн</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="service-basket" class="service-basket-zone">
+                <p class="service-basket-heading">🛒 Мій кошик послуг</p>
+                <div id="service-basket-list"></div>
+                <p id="basket-empty-msg" class="basket-empty-msg">Перетягніть послуги сюди</p>
+                <p id="basket-total" class="basket-total"></p>
+                <button class="btn-js btn-clear" id="basket-clear-btn">🗑 Очистити кошик</button>
+            </div>
+
+        </div>
+
+        <hr>
+
         <h2 id="schedule">Розклад роботи</h2>
 
         <dl>
